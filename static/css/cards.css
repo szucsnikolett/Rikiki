@@ -6,13 +6,6 @@ img.card {
 	vertical-align: initial;
 	box-sizing: initial;
 }
-.player {
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
-}
 /*
  * A hand is a div containing cards.
  */
