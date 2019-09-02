@@ -1,9 +1,46 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-<script src="{{ url_for('static', filename='*.js') }}" defer></script>
+<script src="{{ url_for('static', filename='game.js') }}" type="text/javascript" defer></script>
+<script src="{{ url_for('static', filename='js/game.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/cards.js') }}" type="text/javascript" defer></script>
+<script src="{{ url_for('static', filename='js/cards-ko.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/anime.min.js') }}" type="text/javascript" defer></script>
 {% endblock %}
 <body>
 {% block content %}
+<div class="player">
+     <div class="hand fan">
+       <img class='card' src='../static/images/cards/AS.svg'>
+       <img class='card' src='../static/images/cards/KS.svg'>
+       <img class='card' src='../static/images/cards/QS.svg'>
+       <img class='card' src='../static/images/cards/JS.svg'>
+       <img class='card' src='../static/images/cards/10S.svg'>
+       <img class='card' src='../static/images/cards/9H.svg'>
+       <img class='card' src='../static/images/cards/3H.svg'>
+       <img class='card' src='../static/images/cards/10D.svg'>
+       <img class='card' src='../static/images/cards/4D.svg'>
+       <img class='card' src='../static/images/cards/2D.svg'>
+       <img class='card' src='../static/images/cards/8C.svg'>
+       <img class='card' src='../static/images/cards/7C.svg'>
+       <img class='card' src='../static/images/cards/6C.svg'>
+     </div>
+        <br>
+     <div class="hand fan">
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+    </div>
+</div>
+
 {% endblock %}
 </body>
