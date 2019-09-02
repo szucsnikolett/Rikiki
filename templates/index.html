@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-<script src="{{ url_for('static', filename='game.js') }}" type="text/javascript" defer></script>
+<script src="{{ url_for('static', filename='js/game.js') }}" type="text/javascript" defer></script>
 <script src="{{ url_for('static', filename='js/game.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/bootstrap.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/cards.js') }}" type="text/javascript" defer></script>
@@ -10,8 +10,60 @@
 {% endblock %}
 <body>
 {% block content %}
-<div class="player">
-     <div class="hand fan">
+<div class="table">
+    <div id="turn">
+      <div class="border">
+        <img class='turn-card' src='../static/images/cards/BLUE_BACK.svg'>
+      </div>
+      <div class="border">
+      </div>
+      <div class="border">
+        <img class='turn-card' src='../static/images/cards/BLUE_BACK.svg'>
+      </div>
+      <div class="border">
+        <img class='turn-card' src='../static/images/cards/BLUE_BACK.svg'>
+      </div>
+    </div>
+    <div class="hand fan" id="top">
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+    </div>
+    <div class="hand fan" id="left">
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+    </div>
+    <div class="hand fan" id="right">
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
+    </div>
+    <div class="hand fan" id="player">
        <img class='card' src='../static/images/cards/AS.svg'>
        <img class='card' src='../static/images/cards/KS.svg'>
        <img class='card' src='../static/images/cards/QS.svg'>
@@ -25,20 +77,6 @@
        <img class='card' src='../static/images/cards/8C.svg'>
        <img class='card' src='../static/images/cards/7C.svg'>
        <img class='card' src='../static/images/cards/6C.svg'>
-     </div>
-        <br>
-     <div class="hand fan">
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
-       <img class='card' src='../static/images/cards/BLUE_BACK.svg'>
     </div>
 </div>
 
