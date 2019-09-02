@@ -110,7 +110,28 @@ img.card {
 	width: 90px;
 }
 
+
 #rules{
 	display: none;
 }
 
+.body{
+    width: 80%;
+    margin: 0 auto;
+	padding: 50px;
+	text-align: center;
+	border: #A5D6D9 solid 3px;
+}
+
+input{
+	border-radius: 5px;
+}
+
+ul{
+	list-style-type: none;
+}
+
+button{
+	border-radius: 5px;
+	margin: 20px;
+}
