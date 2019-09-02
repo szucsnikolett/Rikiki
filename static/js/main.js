@@ -11,4 +11,5 @@ function game_rules(){
     })
 }
 
+
 game_rules();
