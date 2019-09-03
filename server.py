@@ -15,7 +15,7 @@ def route_play():
     player2 = request.args.get('player2')
     player3 = request.args.get('player3')
     player4 = request.args.get('player4')
-    return render_template('index.html')
+    return render_template('index.html', player1=player1, player2=player2, player3=player3, player4=player4)
 
 
 if __name__ == '__main__':

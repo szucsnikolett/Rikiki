@@ -14,7 +14,7 @@ function gameRules(){
 
 
 function getBets(player){
-    let bet = prompt(`Make your bets now! ${player}`;
+    let bet = prompt(`Make your bets now! ${player}`);
     return bet
 }
 
@@ -28,6 +28,22 @@ function checkBets(bets, actualResult, scores){
         }
     }
 }
+
+
+bets= {"player1": 1};
+scores = {"player1" : 2};
+
+
+function displayScores(bets, scores, player){
+    let element = document.querySelector("#" + player);
+    let info = `<p>Player: ${element.dataset.name}</p>
+                     <p>Score: ${scores[player]}</p>
+                     <p>Bet: ${bets[player]}</p>`;
+    element.innerHTML = info;
+}
+
+
+displayScores(bets, scores, "player1");
 
 let bets = {} ;
 let bet = getBets(player);
