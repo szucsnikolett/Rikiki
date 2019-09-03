@@ -50,7 +50,10 @@ function dealCards(numberOfCards){
     Player3Cards = Player3Cards.sort();
     Player4Cards = Player4Cards.sort();
 
-    return {'Player1': Player1Cards, 'Player2': Player2Cards, 'Player3': Player3Cards, 'Player4': Player4Cards};
+    let trump = shuffledDeck.shift();
+
+    return {'Player1': Player1Cards, 'Player2': Player2Cards, 'Player3': Player3Cards, 'Player4': Player4Cards,
+            'Deck': shuffledDeck, 'trump': trump};
 }
 
 function displayPlayerHands(CardsOfPlayer){
@@ -76,8 +79,35 @@ function displayPlayerHands(CardsOfPlayer){
 
 }
 
-let Cards = dealCards(5);
+
+function displayDeck(Deck){
+    let rootSrc = '../static/images/cards/';
+    let deckSize = Deck.length;
+    let deckHtml = document.querySelector('.deck');
+    deckHtml.innerHTML = '';
+    for(let i = 0; i < deckSize; i++){
+        const card = document.createElement('img');
+        card.classList.add('card');
+        card.setAttribute('src',rootSrc + 'BLUE_BACK.svg');
+        deckHtml.appendChild(card);
+    }
+
+}
+
+function displayTrump(trump){
+    let rootSrc = '../static/images/cards/';
+    let trumpHtml = document.querySelector('.trump');
+    trumpHtml.innerHTML = '';
+    const card = document.createElement('img');
+    card.classList.add('card');
+    card.setAttribute('src',rootSrc + trump + '.svg');
+    trumpHtml.appendChild(card);
+}
+
+let Cards = dealCards(12);
+displayTrump(Cards.trump);
+displayDeck(Cards.Deck);
 displayPlayerHands(Cards.Player1);
 
-displayPlayerHands(Cards.Player2);
+
 
