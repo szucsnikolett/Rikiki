@@ -1,5 +1,5 @@
 
-function game_rules(){
+function gameRules(){
     let button = document.getElementById('button');
     button.addEventListener('click',  showRules = () => {
         let rules = document.getElementById('rules');
@@ -11,5 +11,15 @@ function game_rules(){
     })
 }
 
+function getBets(){
+    let players = ["player1", "player2", "player3", "player4"];
+    let bets = {};
+    for (let player of players){
+        let bet = prompt(`Make your bets now! ${player}`);
+        bets[player] = bet;
+    }
+    return bets
+}
 
-game_rules();
+getBets();
+gameRules();
