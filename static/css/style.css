@@ -6,6 +6,15 @@
     margin: auto;
     max-width: 960px;
 }
+.deck{
+    float: right;
+    padding: 5px 5px;
+}
+
+.trump{
+    float: left;
+    padding: 5px;
+}
 
 #left {
     position: absolute;
@@ -34,7 +43,7 @@
 #turn {
     position: absolute;
     top: 40%;
-    left: 31%;
+    left: 27%;
 }
 
 #turn .border {
@@ -42,13 +51,13 @@
     padding: 5px;
     border: white solid 1px;
     border-radius: 4px;
-    width: 82px;
-    height: 110px;
+    width: 102px;
+    height: 138px;
     float: left;
 }
 
 img.turn-card {
-    width: 70px;
+    width: 90px;
 }
 
 body {
