@@ -63,3 +63,15 @@ img.turn-card {
 body {
     overflow:visible !important;
 }
+
+.round {
+    width: 960px;
+    height: 100px;
+    margin: auto;
+    background-color: orange;
+}
+
+#player-turn {
+    font-size: 50px;
+    text-align: center;
+}
