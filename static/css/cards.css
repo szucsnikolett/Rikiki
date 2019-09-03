@@ -53,11 +53,10 @@ img.card {
 }
 .hhand-compact img.card:first-child { 
 	margin-left: 0px;
-	padding-top: 10px;
 }
 .hhand-compact img.card { 
-	margin-left: -69.7px;
-	padding-top: 10px;
+	margin-left: -89.8px;
+	width: 90px
 }
 .hhand-compact.active-hand img.card:hover {
 	padding-top: 0px;
