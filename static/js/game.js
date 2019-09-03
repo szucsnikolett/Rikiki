@@ -57,7 +57,6 @@ function dealCards(numberOfCards){
 }
 
 function displayPlayerHands(CardsOfPlayer){
-    console.log(CardsOfPlayer);
     let rootSrc = '../static/images/cards/';
     let players = ['#top', '#left', '#right', '#player'];
     let numberOfCards = CardsOfPlayer.length;
@@ -69,11 +68,13 @@ function displayPlayerHands(CardsOfPlayer){
             card.classList.add('card');
             if(player === '#player'){
                 card.setAttribute('src',rootSrc + CardsOfPlayer[i] + '.svg');
+                card.setAttribute('data-card', CardsOfPlayer[i]);
             }
             else{
                 card.setAttribute('src',rootSrc + 'BLUE_BACK.svg');
             }
             PlayerHtml.appendChild(card);
+            rotateCards();
     }
         }
 
@@ -110,4 +111,41 @@ displayDeck(Cards.Deck);
 displayPlayerHands(Cards.Player1);
 
 
+function getBets(player){
+    let bet = prompt(`Make your bets now! ${player}`);
+    return bet
+}
 
+function getPlayers() {
+    let names = {};
+    let player = 1;
+    for (player; player <= 4; player++){
+        names["Player" + player] = document.querySelector('#player'+player).dataset.name;
+    }
+    return names
+}
+
+function showPlayerTurn(name){
+    let htmlMessage = name + "'s turn";
+    let header = document.querySelector('#player-turn');
+    header.textContent = htmlMessage;
+}
+
+//main skeleton (unfinished)
+function main() {
+    let round = 1;
+    let cards;
+    let players = ['Player1', 'Player2', 'Player3', 'Player4'];
+    let names = getPlayers();
+    let bets = {};
+    for (round; round <= 2; round ++){
+        console.log(round);
+        cards = dealCards(round);
+        for (let player of players){
+            showPlayerTurn(names[player]);
+            displayPlayerHands(cards[player]);
+            bets[player] = getBets(names[player]);
+            console.log(bets)
+        }
+    }
+}
