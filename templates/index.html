@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-    <script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript" defer></script>
+<script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript" defer></script>
 <script src="{{ url_for('static', filename='js/game.js') }}" type="text/javascript" defer></script>
 <script src="{{ url_for('static', filename='js/bootstrap.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/cards.js') }}" type="text/javascript" defer></script>
@@ -12,6 +12,9 @@
 <body>
 {% block content %}
 
+<div class="round">
+    <h1 id="player-turn"></h1>
+</div>
 <div class="table">
     <div class="trump hhand-compact"></div>
     <div class="deck hand hhand-compact"></div>
