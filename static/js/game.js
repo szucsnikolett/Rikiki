@@ -57,6 +57,8 @@ function dealCards(numberOfCards){
 }
 
 function displayPlayerHands(CardsOfPlayer){
+    console.log(CardsOfPlayer);
+    let place = '';
     let rootSrc = '../static/images/cards/';
     let players = ['#top', '#left', '#right', '#player'];
     let numberOfCards = CardsOfPlayer.length;
@@ -67,6 +69,35 @@ function displayPlayerHands(CardsOfPlayer){
             const card = document.createElement('img');
             card.classList.add('card');
             if(player === '#player'){
+                card.addEventListener("click", function (event) {
+
+                    if (place === '') {
+                        place = '#1place';
+                    }
+                    else if(place === '#1place'){
+                        place = '#2place';
+                    }
+                    else if(place === '#2place'){
+                        place = '#3place';
+                    }
+                    else if(place === '#3place'){
+                        place = '#4place';
+                    }
+                    else{
+                        place = "";
+                    }
+                    $(event.currentTarget).prependTo($(place));
+
+                    let givenCards = document.querySelectorAll('.turn-card .card');
+                    // console.log(givenCard);
+                    for(givenCard of givenCards){
+                        givenCard.classList.replace('card', 'turn-card');
+                        // givenCard.style.transform = 'rotate(0deg)';
+                    }
+
+                    // $(event.currentTarget).classList.replace($('card'),$('turn-card'));
+
+                });
                 card.setAttribute('src',rootSrc + CardsOfPlayer[i] + '.svg');
                 card.setAttribute('data-card', CardsOfPlayer[i]);
             }
@@ -74,7 +105,6 @@ function displayPlayerHands(CardsOfPlayer){
                 card.setAttribute('src',rootSrc + 'BLUE_BACK.svg');
             }
             PlayerHtml.appendChild(card);
-            rotateCards();
     }
         }
 
