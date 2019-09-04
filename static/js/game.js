@@ -6,7 +6,6 @@ function rotateCards() {
 
 rotateCards();
 
-
 function shuffleDeck() {
     const cards = ['C02', 'C03', 'C04', 'C05', 'C06', 'C07', 'C08', 'C09', 'C10', 'C11', 'C12', 'C13', 'C14',
                    'D02', 'D03', 'D04', 'D05', 'D06', 'D07', 'D08', 'D09', 'D10', 'D11', 'D12', 'D13', 'D14',
@@ -57,6 +56,9 @@ function dealCards(numberOfCards){
 }
 
 function displayPlayerHands(cards){
+    localStorage.setItem("cards", JSON.stringify(cards));
+    let names = getPlayers()
+    showPlayerTurn(names[getPlayer()]);
     let cardsOfPlayer = cards[getPlayer()];
     let rootSrc = '../static/images/cards/';
     let players = ['#top', '#left', '#right', '#player'];
@@ -64,22 +66,22 @@ function displayPlayerHands(cards){
     for( let player of players){
         let PlayerHtml = document.querySelector(player);
         PlayerHtml.innerHTML = '';
-        for(let i = 0; i < numberOfCards; ++i){
+        for(let i = 0; i < numberOfCards; i++){
+
             const card = document.createElement('img');
             card.classList.add('card');
             if(player === '#player'){
-                card.addEventListener("click", playCard(event, cards));
+                card.addEventListener("click", playCard);
                 card.setAttribute('src',rootSrc + cardsOfPlayer[i] + '.svg');
                 card.setAttribute('data-card', cardsOfPlayer[i]);
+                card.setAttribute('data-player', getPlayer());
             }
             else{
                 card.setAttribute('src',rootSrc + 'BLUE_BACK.svg');
             }
             PlayerHtml.appendChild(card);
-    }
         }
-
-
+    }
 }
 
 
@@ -138,31 +140,39 @@ function showPlayerTurn(name){
     header.textContent = htmlMessage;
 }
 
-function playCard(event, cards) {
+function playCard(event) {
     let currentPlayer = document.querySelector('#player').dataset.player;
-    switch (currentPlayer) {
-        case 'Player1':
+    let currentTurn = getTurn()
+    let cards = JSON.parse(localStorage.getItem("cards"));
+    console.log(cards);
+    let currentPlayerString;
+    switch (currentTurn) {
+        case 1:
             currentPlayerString = '#first';
             break;
-        case 'Player2':
+        case 2:
             currentPlayerString = '#second';
             break;
-        case 'Player3':
+        case 3:
             currentPlayerString = '#third';
             break;
-        case 'Player4':
+        case 4:
             currentPlayerString = '#fourth'
-    }
+        }
     let turnCard = document.querySelector(currentPlayerString);
     turnCard.insertAdjacentElement('afterbegin', event.currentTarget);
+    event.currentTarget.removeEventListener('click', playCard);
+    let currentCard = console.log(event.currentTarget.dataset.card);
+    cards[currentPlayer].splice( cards[currentPlayer].indexOf(currentCard), 1 );
+    console.log(cards);
 
-                    let givenCards = document.querySelectorAll('.turn-card .card');
-                    for(givenCard of givenCards){
-                        givenCard.classList.replace('card', 'turn-card');
-                        givenCard.style.transform = 'rotate(0deg)';
-
-                    }
+        let givenCards = document.querySelectorAll('.turn-card .card');
+        for(givenCard of givenCards){
+            givenCard.classList.replace('card', 'turn-card');
+            givenCard.style.transform = 'rotate(0deg)';
+        }
     // document.querySelector('#player').setAttribute('data-player', currentPlayer);
+    nextTurn(getTurn());
     setPlayer(nextPlayerInTurn());
     displayPlayerHands(cards);
 }
@@ -248,15 +258,13 @@ function main() {
     let bets = {};
     cards = dealCards(round);
     let currentPlayer = getPlayer();
-    showPlayerTurn(names[currentPlayer]);
     displayPlayerHands(cards);
     // bets[player] = getBets(names[player]);
 
 }
 
 function getPlayer() {
-    let anyad = document.querySelector('#player').dataset.player;
-    return anyad;
+    return document.querySelector('#player').dataset.player;
 }
 
 function setPlayer(nextPlayerInTurn) {
@@ -276,7 +284,19 @@ function nextPlayerInTurn() {
     }
 }
 
+function getTurn() {
+    return parseInt(document.querySelector('#player').dataset.turn);
+}
 
+function nextTurn(currentTurn) {
+    let newTurn;
+    if (currentTurn < 4){
+        newTurn = currentTurn + 1;
+    } else {
+        newTurn = 1;
+    }
+    document.querySelector('#player').setAttribute('data-turn', newTurn);
+}
 
 
 
