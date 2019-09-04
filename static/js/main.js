@@ -20,7 +20,7 @@ function getBets(player){
         let inputField = document.getElementById('bets').value;
         bet[player] = inputField;
     });
-    console.log(bet);
+    return bet;
 }
 
 
@@ -56,14 +56,7 @@ let bet = getBets("player");
 
 //gameRules();
 
-function checkHandRound(cards){
-    let cardValues = [];
-    let trumpCard = cards[0].dataset.cardValue;
-    let firstInTurnPlayer = cards[1].dataset.cardValue;
-    let secondInTurnPlayer = cards[2].dataset.cardValue;
-    let thirdInTurnPlayer = cards[2].dataset.cardValue;
-    let fourthInTurnPlayer = cards[2].dataset.cardValue;
 
 
 
-}
+

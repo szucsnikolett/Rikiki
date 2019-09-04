@@ -142,8 +142,13 @@ displayPlayerHands(Cards.Player1);
 
 
 function getBets(player){
-    let bet = prompt(`Make your bets now! ${player}`);
-    return bet
+    let bet = {};
+    let buttonData = document.getElementsByTagName("button");
+    buttonData[0].addEventListener('click', getInput = () => {
+        let inputField = document.getElementById('bets').value;
+        bet[player] = inputField;
+    });
+    return bet;
 }
 
 function getPlayers() {
@@ -161,6 +166,68 @@ function showPlayerTurn(name){
     header.textContent = htmlMessage;
 }
 
+
+function checkForTrumps(trump, cards){
+    let trumpLetter = trump.split("")[0];
+    let trumpMatchingCards = [];
+    for (let card of cards){
+        if (card.startsWith(trumpLetter)){
+            trumpMatchingCards.push(card)
+        }
+    }
+    if (trumpMatchingCards.length === 1){
+        return trumpMatchingCards[0];
+    } else if (trumpMatchingCards.length > 1) {
+            trumpMatchingCards.sort();
+            return trumpMatchingCards[0]
+    } else {
+        return ""
+    }
+}
+
+function compareWithFirstCard(cards){
+    let card1Letter = cards[0].split("")[0];
+    let matchingCards = [];
+    for (let i = 1; i < cards.length; i++){
+        if (cards[i].startsWith(card1Letter)){
+            matchingCards.push(cards[i])
+        }
+    }
+    if (matchingCards.length === 1){
+        return matchingCards[0]
+    } else if (matchingCards.length > 1){
+        matchingCards.sort();
+        return matchingCards[0]
+    } else {
+        return ""
+    }
+}
+
+
+//trump will be cards.trump
+function checkHandRound(trump){
+    let card1 = document.querySelector('#first').querySelector('img').dataset.card;
+    let card2 = document.querySelector('#second').querySelector('img').dataset.card;
+    let card3 = document.querySelector('#third').querySelector('img').dataset.card;
+    let card4 = document.querySelector('#fourth').querySelector('img').dataset.card;
+    let cards = [];
+    cards.push(card1, card2, card3, card4);
+    let winnerTrumpCard = checkForTrumps(trump, cards);
+    if (winnerTrumpCard.length === 1){
+        return winnerTrumpCard
+    } else {
+        let winnerCard = compareWithFirstCard(cards);
+        if (winnerCard.length === 1) {
+            return winnerCard
+        } else {
+            return card1
+        }
+    }
+}
+
+//to call for a round of cards check
+//checkHandRound();
+
 //main skeleton (unfinished)
 function main() {
     let round = 1;
@@ -175,7 +242,9 @@ function main() {
             showPlayerTurn(names[player]);
             displayPlayerHands(cards[player]);
             bets[player] = getBets(names[player]);
-            console.log(bets)
+
         }
     }
 }
+
+
