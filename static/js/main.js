@@ -14,8 +14,13 @@ function gameRules(){
 
 
 function getBets(player){
-    let bet = prompt(`Make your bets now! ${player}`);
-    return bet
+    let bet = {};
+    let buttonData = document.getElementsByTagName("button");
+    buttonData[0].addEventListener('click', getInput = () => {
+        let inputField = document.getElementById('bets').value;
+        bet[player] = inputField;
+    });
+    console.log(bet);
 }
 
 
@@ -30,8 +35,6 @@ function checkBets(bets, actualResult, scores){
 }
 
 
-bets= {"player1": 1};
-scores = {"player1" : 2};
 
 
 function displayScores(bets, scores, player){
@@ -43,12 +46,24 @@ function displayScores(bets, scores, player){
 }
 
 
-displayScores(bets, scores, "player1");
+//displayScores(bets, scores, "player1");
 
-let bets = {} ;
-let bet = getBets(player);
-bets[player] = bet;
-checkBets(bets, actualResult, scores);
+//let bets = {} ;
+let bet = getBets("player");
 
-gameRules();
+//bets[player] = bet;
+//checkBets(bets, actualResult, scores);
 
+//gameRules();
+
+function checkHandRound(cards){
+    let cardValues = [];
+    let trumpCard = cards[0].dataset.cardValue;
+    let firstInTurnPlayer = cards[1].dataset.cardValue;
+    let secondInTurnPlayer = cards[2].dataset.cardValue;
+    let thirdInTurnPlayer = cards[2].dataset.cardValue;
+    let fourthInTurnPlayer = cards[2].dataset.cardValue;
+
+
+
+}
