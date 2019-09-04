@@ -167,10 +167,10 @@ function showPlayerTurn(name){
 }
 
 
-function checkForTrumps(trump, cards){
+function checkForTrumps(trump, cardsToCheck){
     let trumpLetter = trump.split("")[0];
     let trumpMatchingCards = [];
-    for (let card of cards){
+    for (let card of cardsToCheck){
         if (card.startsWith(trumpLetter)){
             trumpMatchingCards.push(card)
         }
@@ -185,12 +185,12 @@ function checkForTrumps(trump, cards){
     }
 }
 
-function compareWithFirstCard(cards){
-    let card1Letter = cards[0].split("")[0];
+function compareWithFirstCard(cardsToCheck){
+    let card1Letter = cardsToCheck[0].split("")[0];
     let matchingCards = [];
-    for (let i = 1; i < cards.length; i++){
-        if (cards[i].startsWith(card1Letter)){
-            matchingCards.push(cards[i])
+    for (let i = 1; i < cardsToCheck.length; i++){
+        if (cardsToCheck[i].startsWith(card1Letter)){
+            matchingCards.push(cardsToCheck[i])
         }
     }
     if (matchingCards.length === 1){
@@ -219,13 +219,13 @@ function checkHandRound(trump){
     playersCards[card2] = playerSecondInRound;
     playersCards[card3] = playerThirdInRound;
     playersCards[card4] = playerFourthInRound;
-    let cards = [];
-    cards.push(card1, card2, card3, card4);
-    let winnerTrumpCard = checkForTrumps(trump, cards);
+    let cardsToCheck = [];
+    cardsToCheck.push(card1, card2, card3, card4);
+    let winnerTrumpCard = checkForTrumps(trump, cardsToCheck);
     if (winnerTrumpCard.length === 1){
         return playersCards[winnerTrumpCard]
     } else {
-        let winnerCard = compareWithFirstCard(cards);
+        let winnerCard = compareWithFirstCard(cardsToCheck);
         if (winnerCard.length === 1) {
             return playersCards[winnerCard]
         } else {
