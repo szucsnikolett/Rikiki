@@ -206,21 +206,30 @@ function compareWithFirstCard(cards){
 
 //trump will be cards.trump
 function checkHandRound(trump){
+    let playersCards = {};
+    let playerFirstInRound = document.querySelector('#firsrt').querySelector('img').dataset.player;
+    let playerSecondInRound = document.querySelector('#second').querySelector('img').dataset.player;
+    let playerThirdInRound = document.querySelector('#third').querySelector('img').dataset.player;
+    let playerFourthInRound = document.querySelector('#fourth').querySelector('img').dataset.player;
     let card1 = document.querySelector('#first').querySelector('img').dataset.card;
     let card2 = document.querySelector('#second').querySelector('img').dataset.card;
     let card3 = document.querySelector('#third').querySelector('img').dataset.card;
     let card4 = document.querySelector('#fourth').querySelector('img').dataset.card;
+    playersCards[card1] = playerFirstInRound;
+    playersCards[card2] = playerSecondInRound;
+    playersCards[card3] = playerThirdInRound;
+    playersCards[card4] = playerFourthInRound;
     let cards = [];
     cards.push(card1, card2, card3, card4);
     let winnerTrumpCard = checkForTrumps(trump, cards);
     if (winnerTrumpCard.length === 1){
-        return winnerTrumpCard
+        return playersCards[winnerTrumpCard]
     } else {
         let winnerCard = compareWithFirstCard(cards);
         if (winnerCard.length === 1) {
-            return winnerCard
+            return playersCards[winnerCard]
         } else {
-            return card1
+            return playersCards[card1]
         }
     }
 }
