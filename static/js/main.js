@@ -49,7 +49,7 @@ function createObjHoldingAllBets(bet1, bet2, bet3, bet4){
 }
 
 
-//after checkHandRound need to add return player's results
+//after checkHandRound need to add return player's results to have actualResult
 function checkBets(bets, actualResult, scores){
     for (let key in bets){
         if (bets.hasOwnProperty(key)){
@@ -69,7 +69,7 @@ function checkBets(bets, actualResult, scores){
 
 
 
-
+//add actual result of handround?
 function displayScores(bets, scores, player){
     let element = document.querySelector("#" + player);
     let info = `<p>Player: ${element.dataset.name}</p>
