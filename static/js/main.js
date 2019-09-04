@@ -12,7 +12,6 @@ function gameRules(){
 }
 
 
-
 function getBets(player){
     let bet = {};
     let buttonData = document.getElementsByTagName("button");
@@ -23,12 +22,46 @@ function getBets(player){
     return bet;
 }
 
+function createObjHoldingAllBets(bet1, bet2, bet3, bet4){
+    let bets = {};
+    for (let key in bet1){
+        if (bet1.hasOwnProperty(key)){
+            bets[key] = bet1[key];
+        }
+    }
+    for (let key in bet2){
+        if (bet2.hasOwnProperty(key)){
+            bets[key] = bet2[key];
+        }
+    }
+    for (let key in bet3){
+        if (bet3.hasOwnProperty(key)){
+            bets[key] = bet3[key];
+        }
+    }
+    for (let key in bet4){
+        if (bet4.hasOwnProperty(key)){
+            bets[key] = bet4[key];
+        }
 
+    }
+    return bets
+}
+
+
+//after checkHandRound need to add return player's results to have actualResult
 function checkBets(bets, actualResult, scores){
     for (let key in bets){
         if (bets.hasOwnProperty(key)){
             if (bets[key] === actualResult[key]){
-                scores[key] += 10;
+                let points = parseInt(bets[key]) * 2 + 10;
+                scores[key] += points;
+            } else if (bets[key] > actualResult[key]) {
+                let points = (parseInt(bets[key]) - parseInt(actualResult[key])) * 2;
+                scores[key] -= points;
+            } else {
+                let points = (parseInt(actualResult[key]) - parseInt(bets[key])) * 2;
+                scores[key] -= points;
             }
         }
     }
@@ -36,7 +69,7 @@ function checkBets(bets, actualResult, scores){
 
 
 
-
+//add actual result of handround?
 function displayScores(bets, scores, player){
     let element = document.querySelector("#" + player);
     let info = `<p>Player: ${element.dataset.name}</p>
