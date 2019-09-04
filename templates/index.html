@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-<script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript" defer></script>
+{#<script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript" defer></script>#}
 <script src="{{ url_for('static', filename='js/game.js') }}" type="text/javascript" defer></script>
 <script src="{{ url_for('static', filename='js/bootstrap.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/cards.js') }}" type="text/javascript" defer></script>
@@ -23,19 +23,18 @@
 
       </div>
       <div class="border turn-card" id="second">
-
       </div>
       <div class="border turn-card" id="third">
 
       </div>
-      <div class="border turn-card" id="fourth">
+      <div class="border turn-card" id=fourth>
 
       </div>
     </div>
     <div class="hand fan" id="top"></div>
     <div class="hand fan" id="left"></div>
     <div class="hand fan" id="right"></div>
-    <div class="hand fan" id="player"></div>
+    <div class="hand fan" id="player" data-player="Player1"></div>
 </div>
 <div id="score-table">
     <div id="player1" data-name="{{ player1 }}">
