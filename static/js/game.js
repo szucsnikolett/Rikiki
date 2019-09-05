@@ -172,21 +172,29 @@ function getBets(event){
     displayPlayerHands(cards);
     }
 
-    function checkBets(bets, roundWon, scores){
+
+function checkBets(bets, roundsWon, scores){
     for (let key in bets){
         if (bets.hasOwnProperty(key)){
-            if (bets[key] === roundWon[key]){
+            if (parseInt(bets[key]) === roundsWon[key]){
                 let points = parseInt(bets[key]) * 2 + 10;
-                scores[key] += points;
-            } else if (bets[key] > roundWon[key]) {
-                let points = (parseInt(bets[key]) - parseInt(roundWon[key])) * 2;
-                scores[key] -= points;
+                scores[key] = points;
+            } else if (parseInt(bets[key]) < roundsWon[key]) {
+                let points = (parseInt(bets[key]) - roundsWon[key]) * 2;
+                scores[key] = points;
             } else {
-                let points = (parseInt(roundWon[key]) - parseInt(bets[key])) * 2;
-                scores[key] -= points;
+                let points = (roundsWon[key] - parseInt(bets[key])) * 2;
+                scores[key] = points;
             }
         }
     }
+    localStorage.setItem('scores', JSON.stringify(scores));
+}
+
+function checkWinByScores(){
+    let scores = createObjHoldingAllScores();
+    let result = Object.keys(scores).reduce((a, b) => parseInt(scores[a]) > parseInt(scores[b]) ? a : b);
+    return result
 }
 
 function removeCards(){
@@ -257,7 +265,14 @@ function playCard(event) {
     if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0){
         let cardNumber =parseInt(document.querySelector('#player').dataset.cardnumber) + 1;
         document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
-        setTimeout(gamePlay(cardNumber), 3000);
+        if (cardNumber > 2){
+            checkBets(createObjHoldingAllBets(), createObjHoldingAllroundsWon(), createObjHoldingAllScores());
+            displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
+            let winner = checkWinByScores();
+            alert(winner)
+        } else {
+             setTimeout(gamePlay(cardNumber), 3000);
+        }
     }
 }
 
@@ -360,10 +375,10 @@ function updateRoundsWon(checkHandRound) {
 
 function createObjHoldingAllBets(){
     let bets = {
-        'Player1': JSON.parse(localStorage.getItem('Player1')),
-        'Player2': JSON.parse(localStorage.getItem('Player2')),
-        'Player3': JSON.parse(localStorage.getItem('Player3')),
-        'Player4': JSON.parse(localStorage.getItem('Player4'))
+        'Player1': parseInt(JSON.parse(localStorage.getItem('Player1'))),
+        'Player2': parseInt(JSON.parse(localStorage.getItem('Player2'))),
+        'Player3': parseInt(JSON.parse(localStorage.getItem('Player3'))),
+        'Player4': parseInt(JSON.parse(localStorage.getItem('Player4')))
     };
     return bets
 }
@@ -433,8 +448,6 @@ function nextTurn(currentTurn) {
     }
     document.querySelector('#player').setAttribute('data-turn', newTurn);
 }
-
-
 
 
 

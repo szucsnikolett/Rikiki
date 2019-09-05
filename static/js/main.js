@@ -22,61 +22,67 @@ function getBets(player){
     return bet;
 }
 
-function createObjHoldingAllBets(bet1, bet2, bet3, bet4){
-    let bets = {};
-    for (let key in bet1){
-        if (bet1.hasOwnProperty(key)){
-            bets[key] = bet1[key];
-        }
-    }
-    for (let key in bet2){
-        if (bet2.hasOwnProperty(key)){
-            bets[key] = bet2[key];
-        }
-    }
-    for (let key in bet3){
-        if (bet3.hasOwnProperty(key)){
-            bets[key] = bet3[key];
-        }
-    }
-    for (let key in bet4){
-        if (bet4.hasOwnProperty(key)){
-            bets[key] = bet4[key];
-        }
-
-    }
+function createObjHoldingAllBets(){
+    let bets = { 'Player1' : JSON.parse(localStorage.getItem('Player1')),
+            'Player2' : JSON.parse(localStorage.getItem('Player2')),
+            'Player3':  JSON.parse(localStorage.getItem('Player3')),
+            'Player4' : JSON.parse(localStorage.getItem('Player4'))}
     return bets
 }
 
+function createScoresinLocal(){
+
+}
+
+
+function createObjHoldingAllScores() {
+    return JSON.parse(localStorage.getItem('Scores'))
+}
+
+function createObjHoldingAllroundsWon() {
+    return JSON.parse(localStorage.getItem('roundsWon'))
+}
+
+
+
 
 //after checkHandRound need to add return player's results to have actualResult
-function checkBets(bets, actualResult, scores){
+function checkBets(bets, roundsWon, scores){
     for (let key in bets){
         if (bets.hasOwnProperty(key)){
-            if (bets[key] === actualResult[key]){
+            if (bets[key] === roundsWon[key]){
                 let points = parseInt(bets[key]) * 2 + 10;
                 scores[key] += points;
-            } else if (bets[key] > actualResult[key]) {
-                let points = (parseInt(bets[key]) - parseInt(actualResult[key])) * 2;
+            } else if (bets[key] > roundsWon[key]) {
+                let points = (parseInt(bets[key]) - parseInt(roundsWon[key])) * 2;
                 scores[key] -= points;
             } else {
-                let points = (parseInt(actualResult[key]) - parseInt(bets[key])) * 2;
+                let points = (parseInt(roundsWon[key]) - parseInt(bets[key])) * 2;
                 scores[key] -= points;
             }
         }
     }
+    localStorage.setItem('roundsWon', JSON.stringify(scores));
 }
 
 
 
 //add actual result of handround?
-function displayScores(bets, scores, player){
-    let element = document.querySelector("#" + player);
-    let info = `<p>Player: ${element.dataset.name}</p>
-                     <p>Score: ${scores[player]}</p>
-                     <p>Bet: ${bets[player]}</p>`;
-    element.innerHTML = info;
+function displayScores(bets, scores, roundWon) {
+    document.querySelector("#scores-table-bets1").innerHTML = bets['player1'];
+    document.querySelector("#scores-table-scores1").innerHTML = scores['player1'];
+    document.querySelector("#scores-table-bets-won1").innerHTML = roundWon['player1'];
+    document.querySelector("#scores-table-bets2").innerHTML = bets['player2'];
+    document.querySelector("#scores-table-scores2").innerHTML = scores['player2'];
+    document.querySelector("#scores-table-bets-won2").innerHTML = roundWon['player2'];
+    document.querySelector("#scores-table-bets3").innerHTML = bets['player3'];
+    document.querySelector("#scores-table-scores3").innerHTML = scores['player3'];
+    document.querySelector("#scores-table-bets-won3").innerHTML = roundWon['player3'];
+    document.querySelector("#scores-table-bets4").innerHTML = bets['player4'];
+    document.querySelector("#scores-table-scores4").innerHTML = scores['player4'];
+    document.querySelector("#scores-table-bets-won4").innerHTML = roundWon['player4'];
 }
+
 
 
 //displayScores(bets, scores, "player1");
