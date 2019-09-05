@@ -59,18 +59,19 @@ function displayPlayerHands(cards){
 
     initFull();
     let round = getRound();
+    let turn = getTurn();
     localStorage.setItem("cards", JSON.stringify(cards));
     let names = getPlayers();
+    if (turn === 1 && round > 1) {
+        let winner = checkHandRound(cards.trump);
+        updateRoundsWon(winner);
+        setPlayer(winner);
+        }
     showPlayerTurn(names[getPlayer()]);
     let cardsOfPlayer = cards[getPlayer()];
     let rootSrc = '../static/images/cards/';
     let players = ['#top', '#left', '#right', '#player'];
     let numberOfCards = cardsOfPlayer.length;
-    let turn = getTurn();
-    if (turn === 1 && round > 1) {
-        updateRoundsWon(checkHandRound(cards.trump));
-            // nextTurn(getTurn());
-        }
     if (round === 0) {
         document.querySelector('#bet-block').classList.remove("hidden");
     }
@@ -261,6 +262,11 @@ function playCard(event) {
     if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0){
         let cardNumber =parseInt(document.querySelector('#player').dataset.cardnumber) + 1;
         document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
+        let lastRound = parseInt(JSON.parse(localStorage.getItem('maxrounds')))
+        if (cardNumber > lastRound) {
+            alert("someone won");
+            return
+        }
         setTimeout(gamePlay(cardNumber), 3000);
     }
 }
@@ -390,6 +396,7 @@ function setRound(nextRound) {
 
 //main skeleton (unfinished)
 function main() {
+    localStorage.setItem('maxrounds', JSON.stringify(3)); //set maximum rounds here
     localStorage.setItem('scores', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
     let cardNumber = 1;
     gamePlay(cardNumber);
