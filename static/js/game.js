@@ -56,13 +56,27 @@ function dealCards(numberOfCards){
 }
 
 function displayPlayerHands(cards){
+
+    initFull();
+    let round = getRound();
     localStorage.setItem("cards", JSON.stringify(cards));
-    let names = getPlayers()
+    let names = getPlayers();
     showPlayerTurn(names[getPlayer()]);
     let cardsOfPlayer = cards[getPlayer()];
     let rootSrc = '../static/images/cards/';
     let players = ['#top', '#left', '#right', '#player'];
     let numberOfCards = cardsOfPlayer.length;
+    let turn = getTurn();
+    if (turn === 1 && round > 1) {
+        updateRoundsWon(checkHandRound(cards.trump));
+            // nextTurn(getTurn());
+        }
+    if(round > 0 ) {
+        displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
+    }
+    if(round > 1 && turn === 1){
+        setTimeout(removeCards, 1000);
+    }
     for( let player of players){
         let PlayerHtml = document.querySelector(player);
         PlayerHtml.innerHTML = '';
@@ -71,7 +85,23 @@ function displayPlayerHands(cards){
             const card = document.createElement('img');
             card.classList.add('card');
             if(player === '#player'){
-                card.addEventListener("click", playCard);
+                if(round !== 0 && turn === 1){
+                    card.addEventListener("click", playCard);
+                }
+                else if(round !== 0 && turn !==1){
+                    let firstCard = document.querySelector('#first').querySelector('img').dataset.card;
+                    let color = firstCard.split('')[0];
+                    if(cardsOfPlayer[i].startsWith(color)){
+                        card.addEventListener('click', playCard);
+                    }
+                    else if(playerHasNoMatchingCards(cardsOfPlayer)){
+                        card.addEventListener('click', playCard);
+                    }
+                }
+                else{
+                    let button = document.querySelector('button');
+                    button.addEventListener('click', getBets)
+                }
                 card.setAttribute('src',rootSrc + cardsOfPlayer[i] + '.svg');
                 card.setAttribute('data-card', cardsOfPlayer[i]);
                 card.setAttribute('data-player', getPlayer());
@@ -82,6 +112,17 @@ function displayPlayerHands(cards){
             PlayerHtml.appendChild(card);
         }
     }
+}
+
+
+function playerHasNoMatchingCards(cardsOfPlayer){
+    let firstCard = document.querySelector('#first').querySelector('img').dataset.card;
+    let color = firstCard.split('')[0];
+    for(let card of cardsOfPlayer){
+        let cardColor = card.split("")[0];
+        if(cardColor === color) return false;
+    }
+    return true;
 }
 
 
@@ -115,15 +156,50 @@ function displayTrump(trump){
 // displayPlayerHands(Cards.Player1);
 
 
-function getBets(player){
-    let bet = {};
-    let buttonData = document.getElementsByTagName("button");
-    buttonData[0].addEventListener('click', getInput = () => {
-        let inputField = document.getElementById('bets').value;
-        bet[player] = inputField;
-    });
-    return bet;
+function getBets(event){
+    let cards = JSON.parse(localStorage.getItem('cards'));
+    let player = document.querySelector('#player').dataset.player;
+    let inputField = document.getElementById('bets').value;
+    localStorage.setItem(player, JSON.stringify(inputField));
+    let round = getRound();
+    let turn = getTurn();
+    if(round === 0 && turn === 4){
+        setRound(nextRound());
+    }
+    nextTurn(getTurn());
+    setPlayer(nextPlayerInTurn());
+
+    displayPlayerHands(cards);
+    }
+
+    function checkBets(bets, roundWon, scores){
+    for (let key in bets){
+        if (bets.hasOwnProperty(key)){
+            if (bets[key] === roundWon[key]){
+                let points = parseInt(bets[key]) * 2 + 10;
+                scores[key] += points;
+            } else if (bets[key] > roundWon[key]) {
+                let points = (parseInt(bets[key]) - parseInt(roundWon[key])) * 2;
+                scores[key] -= points;
+            } else {
+                let points = (parseInt(roundWon[key]) - parseInt(bets[key])) * 2;
+                scores[key] -= points;
+            }
+        }
+    }
 }
+
+function removeCards(){
+    let cards = [document.querySelector('#first'),
+                 document.querySelector('#second'),
+                 document.querySelector('#third'),
+                 document.querySelector('#fourth')];
+    for (let card of cards) {
+        card.innerHTML = '';
+    }
+}
+
+
 
 function getPlayers() {
     let names = {};
@@ -142,7 +218,7 @@ function showPlayerTurn(name){
 
 function playCard(event) {
     let currentPlayer = document.querySelector('#player').dataset.player;
-    let currentTurn = getTurn()
+    let currentTurn = getTurn();
     let cards = JSON.parse(localStorage.getItem("cards"));
     console.log(cards);
     let currentPlayerString;
@@ -164,7 +240,6 @@ function playCard(event) {
     event.currentTarget.removeEventListener('click', playCard);
     let currentCard = console.log(event.currentTarget.dataset.card);
     cards[currentPlayer].splice( cards[currentPlayer].indexOf(currentCard), 1 );
-    console.log(cards);
 
         let givenCards = document.querySelectorAll('.turn-card .card');
         for(givenCard of givenCards){
@@ -172,9 +247,18 @@ function playCard(event) {
             givenCard.style.transform = 'rotate(0deg)';
         }
     // document.querySelector('#player').setAttribute('data-player', currentPlayer);
+
+    if(getTurn() === 4){
+        setRound(nextRound());
+    }
     nextTurn(getTurn());
     setPlayer(nextPlayerInTurn());
     displayPlayerHands(cards);
+    if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0){
+        let cardNumber =parseInt(document.querySelector('#player').dataset.cardnumber) + 1;
+        document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
+        setTimeout(gamePlay(cardNumber), 3000);
+    }
 }
 
 
@@ -189,7 +273,7 @@ function checkForTrumps(trump, cardsToCheck){
     if (trumpMatchingCards.length === 1){
         return trumpMatchingCards[0];
     } else if (trumpMatchingCards.length > 1) {
-            trumpMatchingCards.sort();
+            trumpMatchingCards.sort().reverse();
             return trumpMatchingCards[0]
     } else {
         return ""
@@ -198,7 +282,7 @@ function checkForTrumps(trump, cardsToCheck){
 
 function compareWithFirstCard(cardsToCheck){
     let card1Letter = cardsToCheck[0].split("")[0];
-    let matchingCards = [];
+    let matchingCards = [cardsToCheck[0]];
     for (let i = 1; i < cardsToCheck.length; i++){
         if (cardsToCheck[i].startsWith(card1Letter)){
             matchingCards.push(cardsToCheck[i])
@@ -207,7 +291,7 @@ function compareWithFirstCard(cardsToCheck){
     if (matchingCards.length === 1){
         return matchingCards[0]
     } else if (matchingCards.length > 1){
-        matchingCards.sort();
+        matchingCards.sort().reverse();
         return matchingCards[0]
     } else {
         return ""
@@ -218,7 +302,7 @@ function compareWithFirstCard(cardsToCheck){
 //trump will be cards.trump
 function checkHandRound(trump){
     let playersCards = {};
-    let playerFirstInRound = document.querySelector('#firsrt').querySelector('img').dataset.player;
+    let playerFirstInRound = document.querySelector('#first').querySelector('img').dataset.player;
     let playerSecondInRound = document.querySelector('#second').querySelector('img').dataset.player;
     let playerThirdInRound = document.querySelector('#third').querySelector('img').dataset.player;
     let playerFourthInRound = document.querySelector('#fourth').querySelector('img').dataset.player;
@@ -233,11 +317,11 @@ function checkHandRound(trump){
     let cardsToCheck = [];
     cardsToCheck.push(card1, card2, card3, card4);
     let winnerTrumpCard = checkForTrumps(trump, cardsToCheck);
-    if (winnerTrumpCard.length === 1){
+    if (winnerTrumpCard){
         return playersCards[winnerTrumpCard]
     } else {
         let winnerCard = compareWithFirstCard(cardsToCheck);
-        if (winnerCard.length === 1) {
+        if (winnerCard) {
             return playersCards[winnerCard]
         } else {
             return playersCards[card1]
@@ -245,23 +329,75 @@ function checkHandRound(trump){
     }
 }
 
+function displayScores(bets, scores, roundsWon) {
+    document.querySelector("#scores-table-bets1").innerHTML = bets['Player1'];
+    document.querySelector("#scores-table-scores1").innerHTML = scores['Player1'];
+    document.querySelector("#scores-table-bets-won1").innerHTML = roundsWon['Player1'];
+    document.querySelector("#scores-table-bets2").innerHTML = bets['Player2'];
+    document.querySelector("#scores-table-scores2").innerHTML = scores['Player2'];
+    document.querySelector("#scores-table-bets-won2").innerHTML = roundsWon['Player2'];
+    document.querySelector("#scores-table-bets3").innerHTML = bets['Player3'];
+    document.querySelector("#scores-table-scores3").innerHTML = scores['Player3'];
+    document.querySelector("#scores-table-bets-won3").innerHTML = roundsWon['Player3'];
+    document.querySelector("#scores-table-bets4").innerHTML = bets['Player4'];
+    document.querySelector("#scores-table-scores4").innerHTML = scores['Player4'];
+    document.querySelector("#scores-table-bets-won4").innerHTML = roundsWon['Player4'];
+}
+
+function createObjHoldingAllScores() {
+    return JSON.parse(localStorage.getItem('scores'))
+}
+
+function createObjHoldingAllroundsWon() {
+    return JSON.parse(localStorage.getItem('roundsWon'))
+}
+
+function updateRoundsWon(checkHandRound) {
+    let dict = createObjHoldingAllroundsWon();
+    dict[checkHandRound] = parseInt(dict[checkHandRound]) + 1;
+    localStorage.setItem('roundsWon', JSON.stringify(dict));
+}
+
+function createObjHoldingAllBets(){
+    let bets = {
+        'Player1': JSON.parse(localStorage.getItem('Player1')),
+        'Player2': JSON.parse(localStorage.getItem('Player2')),
+        'Player3': JSON.parse(localStorage.getItem('Player3')),
+        'Player4': JSON.parse(localStorage.getItem('Player4'))
+    };
+    return bets
+}
+
+function getRound() {
+    return parseInt(document.querySelector('#player').dataset.round)
+}
+
+
+function nextRound() {
+    return getRound() + 1;
+}
+
+function setRound(nextRound) {
+    document.querySelector('#player').setAttribute('data-round', nextRound);
+}
+
 //to call for a round of cards check
 //checkHandRound();
 
 //main skeleton (unfinished)
 function main() {
-    let round = 3;
-    let cards;
-    // let currentPlayer = 0;
-    // let players = ['Player1', 'Player2', 'Player3', 'Player4'];
-    let names = getPlayers();
-    let bets = {};
-    cards = dealCards(round);
-    let currentPlayer = getPlayer();
-    displayPlayerHands(cards);
-    // bets[player] = getBets(names[player]);
-
+    localStorage.setItem('scores', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
+    let cardNumber = 1;
+    gamePlay(cardNumber);
 }
+    function gamePlay(cardNumber){
+        localStorage.setItem('roundsWon', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
+        let cards = dealCards(cardNumber);
+        document.querySelector('#player').setAttribute('data-round', 0);
+        displayTrump(cards.trump);
+        displayPlayerHands(cards);
+    }
+
 
 function getPlayer() {
     return document.querySelector('#player').dataset.player;
@@ -297,6 +433,8 @@ function nextTurn(currentTurn) {
     }
     document.querySelector('#player').setAttribute('data-turn', newTurn);
 }
+
+
 
 
 

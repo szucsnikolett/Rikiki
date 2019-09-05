@@ -3,7 +3,7 @@
 
 var cardsScript = document.currentScript;
 
-(function (root, factory) {
+let initFunc = function (root, factory) {
     'use strict';
 
     if (typeof define === 'function' && define.amd) {
@@ -18,7 +18,11 @@ var cardsScript = document.currentScript;
         // Browser globals (root is window)
         root.cards = factory(root.jQuery);
     }
-}(this, function ($) {
+
+    mathStuff();
+};
+
+let shouldCall = function ($) {
     'use strict';
 
     var module = {
@@ -285,8 +289,7 @@ var cardsScript = document.currentScript;
         return coords;
     }
 
-    // If loaded directly from a script, the do the jquery shuffle.
-    $(window).on('load', function () {
+    let letscall = function () {
         // Adjust the cards in a fan, except ones using KO.
         $(".fan:not([data-bind])").each(function () {
             module.fan($(this));
@@ -301,7 +304,10 @@ var cardsScript = document.currentScript;
         $(".hand").on("click", "img.card", function () {
             module.play($(this));
         });
-    });
+    };
+    // If loaded directly from a script, the do the jquery shuffle.
+    $(window).on('load', letscall);
+    $(window).on('click', letscall);
 
     // Default imagesUrl to a subfolder of the script source.
     if (cardsScript && cardsScript.src) {
@@ -313,10 +319,10 @@ var cardsScript = document.currentScript;
     // This example returns an object, but the module
     // can return a function as the exported value.
     return module;
-}));
+};
 
-// Math Additions
-if (!Math.degreesToRadians) {
+let mathStuff = function() {
+    if (!Math.degreesToRadians) {
     Math.degreesToRadians = function (degrees) {
         return degrees * (Math.PI / 180);
     };
@@ -364,3 +370,13 @@ if (!Math.rotatePointInBox) {
         return [ dx2 + centerX, dy2 + centerY ];
     };
 }
+
+};
+
+let initFull = function () {
+    initFunc(this, shouldCall);
+};
+
+initFull();
+
+// Math Additions

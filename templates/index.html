@@ -2,9 +2,9 @@
 
 {% block head %}
 {#<script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript" defer></script>#}
-<script src="{{ url_for('static', filename='js/game.js') }}" type="text/javascript" defer></script>
-<script src="{{ url_for('static', filename='js/bootstrap.js') }}" defer></script>
-<script src="{{ url_for('static', filename='js/cards.js') }}" type="text/javascript" defer></script>
+    <script src="{{ url_for('static', filename='js/cards.js') }}" type="text/javascript" defer></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}" type="text/javascript" defer></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}" defer></script>
 {#<script src="{{ url_for('static', filename='js/cards-ko.js') }}" type="text/javascript"></script>#}
 <script src="{{ url_for('static', filename='js/anime.min.js') }}" type="text/javascript" defer></script>
 
@@ -34,7 +34,7 @@
     <div class="hand fan" id="top"></div>
     <div class="hand fan" id="left"></div>
     <div class="hand fan" id="right"></div>
-    <div class="hand fan" id="player" data-player="Player1" data-turn="1"></div>
+    <div class="hand fan" id="player" data-player="Player1" data-turn="1" data-round="0" data-cardnumber="1"></div>
 </div>
 <div id="score-table">
     <div id="player1" data-name="{{ player1 }}">
@@ -45,6 +45,30 @@
     </div>
     <div id="player4" data-name="{{ player4 }}">
     </div>
+</div>
+<div>
+    <p>Player1</p>
+    <p>Bets: <span id="scores-table-bets1"></span></p>
+    <p>Scores: <span id="scores-table-scores1"></span></p>
+    <p>Actual Bets Won: <span id="scores-table-bets-won1"></span></p>
+</div>
+<div>
+    <p>Player2</p>
+    <p>Bets: <span id="scores-table-bets2"></span></p>
+    <p>Scores: <span id="scores-table-scores2"></span></p>
+    <p>Actual Bets Won: <span id="scores-table-bets-won2"></span></p>
+</div>
+<div>
+    <p>Player3</p>
+    <p>Bets: <span id="scores-table-bets3"></span></p>
+    <p>Scores: <span id="scores-table-scores3"></span></p>
+    <p>Actual Bets Won: <span id="scores-table-bets-won3"></span></p>
+</div>
+<div>
+    <p>Player4</p>
+    <p>Bets: <span id="scores-table-bets4"></span></p>
+    <p>Scores: <span id="scores-table-scores4"></span></p>
+    <p>Actual Bets Won: <span id="scores-table-bets-won4"></span></p>
 </div>
 <div>
     <label for="bets">Make your bet:</label><br>
