@@ -271,9 +271,10 @@ function playCard(event) {
     if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0){
         let cardNumber =parseInt(document.querySelector('#player').dataset.cardnumber) + 1;
         document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
+        checkBets(createObjHoldingAllBets(), createObjHoldingAllroundsWon(), createObjHoldingAllScores());
+        displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
         if (cardNumber > 2){
-            checkBets(createObjHoldingAllBets(), createObjHoldingAllroundsWon(), createObjHoldingAllScores());
-            displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
+
             let winner = checkWinByScores();
             alert(winner)
         } else {
@@ -402,13 +403,13 @@ function setRound(nextRound) {
 //main skeleton (unfinished)
 function main() {
     localStorage.setItem('scores', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
-    localStorage.setItem('allBets', JSON.stringify({'Player1' : 0, 'Player2' : 0, 'Player3': 0, 'Player4': 0}));
-    localStorage.setItem('roundsWon', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
+
     let cardNumber = 1;
     gamePlay(cardNumber);
 }
     function gamePlay(cardNumber){
-
+        localStorage.setItem('allBets', JSON.stringify({'Player1' : 0, 'Player2' : 0, 'Player3': 0, 'Player4': 0}));
+        localStorage.setItem('roundsWon', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
         let cards = dealCards(cardNumber);
         document.querySelector('#player').setAttribute('data-round', 0);
         displayTrump(cards.trump);
