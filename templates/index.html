@@ -11,7 +11,6 @@
 {% endblock %}
 <body>
 {% block content %}
-
 <div class="round">
     <h1 id="player-turn"></h1>
 </div>
@@ -38,39 +37,32 @@
 </div>
 <div id="score-table">
     <div id="player1" data-name="{{ player1 }}">
+        <p>{{ player1 }} (player1)</p>
+        <p>Bets: <span id="scores-table-bets1"></span></p>
+        <p>Scores: <span id="scores-table-scores1"></span></p>
+        <p>Rounds won: <span id="scores-table-bets-won1"></span></p>
     </div>
     <div id="player2" data-name="{{ player2 }}">
+        <p>{{ player2 }} (player2)</p>
+        <p>Bets: <span id="scores-table-bets2"></span></p>
+        <p>Scores: <span id="scores-table-scores2"></span></p>
+        <p>Rounds won: <span id="scores-table-bets-won2"></span></p>
     </div>
     <div id="player3" data-name="{{ player3 }}">
+        <p>{{ player3 }} (player3)</p>
+        <p>Bets: <span id="scores-table-bets3"></span></p>
+        <p>Scores: <span id="scores-table-scores3"></span></p>
+        <p>Rounds won: <span id="scores-table-bets-won3"></span></p>
     </div>
     <div id="player4" data-name="{{ player4 }}">
+        <p>{{ player4 }} (player4)</p>
+        <p>Bets: <span id="scores-table-bets4"></span></p>
+        <p>Scores: <span id="scores-table-scores4"></span></p>
+        <p>Rounds won: <span id="scores-table-bets-won4"></span></p>
     </div>
 </div>
-<div>
-    <p>Player1</p>
-    <p>Bets: <span id="scores-table-bets1"></span></p>
-    <p>Scores: <span id="scores-table-scores1"></span></p>
-    <p>Actual Bets Won: <span id="scores-table-bets-won1"></span></p>
-</div>
-<div>
-    <p>Player2</p>
-    <p>Bets: <span id="scores-table-bets2"></span></p>
-    <p>Scores: <span id="scores-table-scores2"></span></p>
-    <p>Actual Bets Won: <span id="scores-table-bets-won2"></span></p>
-</div>
-<div>
-    <p>Player3</p>
-    <p>Bets: <span id="scores-table-bets3"></span></p>
-    <p>Scores: <span id="scores-table-scores3"></span></p>
-    <p>Actual Bets Won: <span id="scores-table-bets-won3"></span></p>
-</div>
-<div>
-    <p>Player4</p>
-    <p>Bets: <span id="scores-table-bets4"></span></p>
-    <p>Scores: <span id="scores-table-scores4"></span></p>
-    <p>Actual Bets Won: <span id="scores-table-bets-won4"></span></p>
-</div>
-<div>
+
+<div id="bet-block">
     <label for="bets">Make your bet:</label><br>
     <input id="bets" type="text"required>
     <button>Ok</button>

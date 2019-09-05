@@ -71,8 +71,12 @@ function displayPlayerHands(cards){
         updateRoundsWon(checkHandRound(cards.trump));
             // nextTurn(getTurn());
         }
+    if (round === 0) {
+        document.querySelector('#bet-block').classList.remove("hidden");
+    }
     if(round > 0 ) {
         displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
+        document.querySelector('#bet-block').classList.add("hidden");
     }
     if(round > 1 && turn === 1){
         setTimeout(removeCards, 1000);
