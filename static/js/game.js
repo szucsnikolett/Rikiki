@@ -164,7 +164,9 @@ function getBets(event){
     let cards = JSON.parse(localStorage.getItem('cards'));
     let player = document.querySelector('#player').dataset.player;
     let inputField = document.getElementById('bets').value;
-    localStorage.setItem(player, JSON.stringify(inputField));
+    let localBets = JSON.parse(localStorage.getItem('allBets'));
+    localBets[player] = parseInt(localBets[player]) + parseInt(inputField);
+    localStorage.setItem('allBets', JSON.stringify(localBets));
     let round = getRound();
     let turn = getTurn();
     if(round === 0 && turn === 4){
@@ -378,13 +380,7 @@ function updateRoundsWon(checkHandRound) {
 }
 
 function createObjHoldingAllBets(){
-    let bets = {
-        'Player1': parseInt(JSON.parse(localStorage.getItem('Player1'))),
-        'Player2': parseInt(JSON.parse(localStorage.getItem('Player2'))),
-        'Player3': parseInt(JSON.parse(localStorage.getItem('Player3'))),
-        'Player4': parseInt(JSON.parse(localStorage.getItem('Player4')))
-    };
-    return bets
+    return JSON.parse(localStorage.getItem('allBets'))
 }
 
 function getRound() {
@@ -406,11 +402,13 @@ function setRound(nextRound) {
 //main skeleton (unfinished)
 function main() {
     localStorage.setItem('scores', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
+    localStorage.setItem('allBets', JSON.stringify({'Player1' : 0, 'Player2' : 0, 'Player3': 0, 'Player4': 0}));
+    localStorage.setItem('roundsWon', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
     let cardNumber = 1;
     gamePlay(cardNumber);
 }
     function gamePlay(cardNumber){
-        localStorage.setItem('roundsWon', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
+
         let cards = dealCards(cardNumber);
         document.querySelector('#player').setAttribute('data-round', 0);
         displayTrump(cards.trump);
