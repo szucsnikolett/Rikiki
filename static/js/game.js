@@ -184,13 +184,13 @@ function checkBets(bets, roundsWon, scores){
         if (bets.hasOwnProperty(key)){
             if (parseInt(bets[key]) === roundsWon[key]){
                 let points = parseInt(bets[key]) * 2 + 10;
-                scores[key] = points;
+                scores[key] += points;
             } else if (parseInt(bets[key]) < roundsWon[key]) {
                 let points = (parseInt(bets[key]) - roundsWon[key]) * 2;
-                scores[key] = points;
+                scores[key] += points;
             } else {
                 let points = (roundsWon[key] - parseInt(bets[key])) * 2;
-                scores[key] = points;
+                scores[key] += points;
             }
         }
     }
@@ -262,17 +262,21 @@ function playCard(event) {
         }
     // document.querySelector('#player').setAttribute('data-player', currentPlayer);
 
+
     if(getTurn() === 4){
+        updateRoundsWon(checkHandRound(cards.trump));
+        checkBets(createObjHoldingAllBets(), createObjHoldingAllroundsWon(), createObjHoldingAllScores());
+        displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
         setRound(nextRound());
+
     }
     nextTurn(getTurn());
     setPlayer(nextPlayerInTurn());
     displayPlayerHands(cards);
+
     if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0){
         let cardNumber =parseInt(document.querySelector('#player').dataset.cardnumber) + 1;
         document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
-        checkBets(createObjHoldingAllBets(), createObjHoldingAllroundsWon(), createObjHoldingAllScores());
-        displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
         if (cardNumber > 2){
 
             let winner = checkWinByScores();
