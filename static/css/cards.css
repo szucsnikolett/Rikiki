@@ -112,7 +112,7 @@ img.card {
     margin: 0 auto;
 	padding: 50px;
 	text-align: center;
-	border: #A5D6D9 solid 3px;
+	border: red solid 3px;
 }
 
 input{
