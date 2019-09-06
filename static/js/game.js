@@ -275,7 +275,7 @@ function playCard(event) {
         document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
         checkBets(createObjHoldingAllBets(), createObjHoldingAllroundsWon(), createObjHoldingAllScores());
         displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
-        let lastRound = parseInt(JSON.parse(localStorage.getItem('maxrounds')))
+        let lastRound = parseInt(JSON.parse(localStorage.getItem('maxrounds')));
         if (cardNumber > lastRound) {
             let winner = checkWinByScores();
             alert(winner + " won!")
@@ -399,10 +399,8 @@ function setRound(nextRound) {
     document.querySelector('#player').setAttribute('data-round', nextRound);
 }
 
-//to call for a round of cards check
-//checkHandRound();
 
-//main skeleton (unfinished)
+
 function main() {
     localStorage.setItem('maxrounds', JSON.stringify(3)); //set maximum rounds here
     localStorage.setItem('scores', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));

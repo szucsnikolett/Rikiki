@@ -115,6 +115,7 @@ h1 {
 
 .hidden {display: none}
 
-.body {background-color: white;
+.body {
+    background-color: white;
     margin-top: 150px;
 }
