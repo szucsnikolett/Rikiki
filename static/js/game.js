@@ -13,32 +13,31 @@ function shuffleDeck() {
                    `S02`, 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09', 'S10', 'S11', 'S12', 'S13', 'S14'];
   let currentIndex = cards.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
 
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
-    // And swap it with the current element.
-    temporaryValue = cards[currentIndex];
-    cards[currentIndex] = cards[randomIndex];
-    cards[randomIndex] = temporaryValue;
-  }
+        // And swap it with the current element.
+        temporaryValue = cards[currentIndex];
+        cards[currentIndex] = cards[randomIndex];
+        cards[randomIndex] = temporaryValue;
+    }
 
-  return cards;
+    return cards;
 }
 
 
-
-function dealCards(numberOfCards){
+function dealCards(numberOfCards) {
 
     let shuffledDeck = shuffleDeck();
     let Player1Cards = [];
     let Player2Cards = [];
     let Player3Cards = [];
     let Player4Cards = [];
-    for(let i = 0; i < numberOfCards; i++ ){
+    for (let i = 0; i < numberOfCards; i++) {
         Player1Cards.push(shuffledDeck.shift());
         Player2Cards.push(shuffledDeck.shift());
         Player3Cards.push(shuffledDeck.shift());
@@ -51,13 +50,14 @@ function dealCards(numberOfCards){
 
     let trump = shuffledDeck.shift();
 
-    return {'Player1': Player1Cards, 'Player2': Player2Cards, 'Player3': Player3Cards, 'Player4': Player4Cards,
-            'Deck': shuffledDeck, 'trump': trump};
+    return {
+        'Player1': Player1Cards, 'Player2': Player2Cards, 'Player3': Player3Cards, 'Player4': Player4Cards,
+        'Deck': shuffledDeck, 'trump': trump
+    };
 }
 
-function displayPlayerHands(cards){
+function displayPlayerHands(cards) {
 
-    initFull();
     let round = getRound();
     let turn = getTurn();
     localStorage.setItem("cards", JSON.stringify(cards));
@@ -66,7 +66,7 @@ function displayPlayerHands(cards){
         let winner = checkHandRound(cards.trump);
         updateRoundsWon(winner);
         setPlayer(winner);
-        }
+    }
     showPlayerTurn(names[getPlayer()]);
     let cardsOfPlayer = cards[getPlayer()];
     let rootSrc = '../static/images/cards/';
@@ -75,83 +75,82 @@ function displayPlayerHands(cards){
     if (round === 0) {
         document.querySelector('#bet-block').classList.remove("hidden");
     }
-    if(round > 0 ) {
+    if (round > 0) {
         displayScores(createObjHoldingAllBets(), createObjHoldingAllScores(), createObjHoldingAllroundsWon());
         document.querySelector('#bet-block').classList.add("hidden");
     }
-    if(round > 1 && turn === 1){
+    if (round > 1 && turn === 1) {
         setTimeout(removeCards, 1000);
     }
-    for( let player of players){
+    for (let player of players) {
         let PlayerHtml = document.querySelector(player);
         PlayerHtml.innerHTML = '';
-        for(let i = 0; i < numberOfCards; i++){
+        for (let i = 0; i < numberOfCards; i++) {
 
             const card = document.createElement('img');
             card.classList.add('card');
-            if(player === '#player'){
-                if(round !== 0 && turn === 1){
+            if (player === '#player') {
+                if (round !== 0 && turn === 1) {
                     card.addEventListener("click", playCard);
-                }
-                else if(round !== 0 && turn !==1){
+                } else if (round !== 0 && turn !== 1) {
                     let firstCard = document.querySelector('#first').querySelector('img').dataset.card;
                     let color = firstCard.split('')[0];
-                    if(cardsOfPlayer[i].startsWith(color)){
+                    if (cardsOfPlayer[i].startsWith(color)) {
                         card.addEventListener('click', playCard);
                     }
                     else if(playerHasNoMatchingCards(cardsOfPlayer)){
                         card.addEventListener('click', playCard);
                     }
-                }
-                else{
+                } else {
                     let button = document.querySelector('button');
                     button.addEventListener('click', getBets)
                 }
-                card.setAttribute('src',rootSrc + cardsOfPlayer[i] + '.svg');
+                card.setAttribute('src', rootSrc + cardsOfPlayer[i] + '.svg');
                 card.setAttribute('data-card', cardsOfPlayer[i]);
                 card.setAttribute('data-player', getPlayer());
-            }
-            else{
-                card.setAttribute('src',rootSrc + 'BLUE_BACK.svg');
+            } else {
+                card.setAttribute('src', rootSrc + 'BLUE_BACK.svg');
             }
             PlayerHtml.appendChild(card);
         }
     }
+        initFull();
+
 }
 
 
-function playerHasNoMatchingCards(cardsOfPlayer){
+function playerHasNoMatchingCards(cardsOfPlayer) {
     let firstCard = document.querySelector('#first').querySelector('img').dataset.card;
     let color = firstCard.split('')[0];
-    for(let card of cardsOfPlayer){
+    for (let card of cardsOfPlayer) {
         let cardColor = card.split("")[0];
-        if(cardColor === color) return false;
+        if (cardColor === color) return false;
     }
     return true;
 }
 
 
-function displayDeck(Deck){
+function displayDeck(Deck) {
     let rootSrc = '../static/images/cards/';
     let deckSize = Deck.length;
     let deckHtml = document.querySelector('.deck');
     deckHtml.innerHTML = '';
-    for(let i = 0; i < deckSize; i++){
+    for (let i = 0; i < deckSize; i++) {
         const card = document.createElement('img');
         card.classList.add('card');
-        card.setAttribute('src',rootSrc + 'BLUE_BACK.svg');
+        card.setAttribute('src', rootSrc + 'BLUE_BACK.svg');
         deckHtml.appendChild(card);
     }
 
 }
 
-function displayTrump(trump){
+function displayTrump(trump) {
     let rootSrc = '../static/images/cards/';
     let trumpHtml = document.querySelector('.trump');
     trumpHtml.innerHTML = '';
     const card = document.createElement('img');
     card.classList.add('card');
-    card.setAttribute('src',rootSrc + trump + '.svg');
+    card.setAttribute('src', rootSrc + trump + '.svg');
     trumpHtml.appendChild(card);
 }
 
@@ -161,7 +160,7 @@ function displayTrump(trump){
 // displayPlayerHands(Cards.Player1);
 
 
-function getBets(event){
+function getBets(event) {
     let cards = JSON.parse(localStorage.getItem('cards'));
     let player = document.querySelector('#player').dataset.player;
     let inputField = document.getElementById('bets').value;
@@ -170,20 +169,20 @@ function getBets(event){
     localStorage.setItem('allBets', JSON.stringify(localBets));
     let round = getRound();
     let turn = getTurn();
-    if(round === 0 && turn === 4){
+    if (round === 0 && turn === 4) {
         setRound(nextRound());
     }
     nextTurn(getTurn());
     setPlayer(nextPlayerInTurn());
 
     displayPlayerHands(cards);
-    }
+}
 
 
-function checkBets(bets, roundsWon, scores){
-    for (let key in bets){
-        if (bets.hasOwnProperty(key)){
-            if (parseInt(bets[key]) === roundsWon[key]){
+function checkBets(bets, roundsWon, scores) {
+    for (let key in bets) {
+        if (bets.hasOwnProperty(key)) {
+            if (parseInt(bets[key]) === roundsWon[key]) {
                 let points = parseInt(bets[key]) * 2 + 10;
                 scores[key] += points;
             } else if (parseInt(bets[key]) < roundsWon[key]) {
@@ -198,34 +197,33 @@ function checkBets(bets, roundsWon, scores){
     localStorage.setItem('scores', JSON.stringify(scores));
 }
 
-function checkWinByScores(){
+function checkWinByScores() {
     let scores = createObjHoldingAllScores();
     let result = Object.keys(scores).reduce((a, b) => parseInt(scores[a]) > parseInt(scores[b]) ? a : b);
     return result
 }
 
-function removeCards(){
+function removeCards() {
     let cards = [document.querySelector('#first'),
-                 document.querySelector('#second'),
-                 document.querySelector('#third'),
-                 document.querySelector('#fourth')];
+        document.querySelector('#second'),
+        document.querySelector('#third'),
+        document.querySelector('#fourth')];
     for (let card of cards) {
         card.innerHTML = '';
     }
 }
 
 
-
 function getPlayers() {
     let names = {};
     let player = 1;
-    for (player; player <= 4; player++){
-        names["Player" + player] = document.querySelector('#player'+player).dataset.name;
+    for (player; player <= 4; player++) {
+        names["Player" + player] = document.querySelector('#player' + player).dataset.name;
     }
     return names
 }
 
-function showPlayerTurn(name){
+function showPlayerTurn(name) {
     let htmlMessage = name + "'s turn";
     let header = document.querySelector('#player-turn');
     header.textContent = htmlMessage;
@@ -270,7 +268,7 @@ function playCard(event) {
     nextTurn(getTurn());
     setPlayer(nextPlayerInTurn());
     displayPlayerHands(cards);
-    if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0){
+    if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0) {
         let cardNumber = parseInt(document.querySelector('#player').dataset.cardnumber) + 1;
         document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
         checkBets(createObjHoldingAllBets(), createObjHoldingAllroundsWon(), createObjHoldingAllScores());
@@ -278,43 +276,45 @@ function playCard(event) {
         let lastRound = parseInt(JSON.parse(localStorage.getItem('maxrounds')));
         if (cardNumber > lastRound) {
             let winner = checkWinByScores();
-            alert(winner + " won!")
+            alert(getPlayers()[winner] + " won!")
         } else {
-             setTimeout(gamePlay(cardNumber), 3000);
+            setTimeout(() => {
+                gamePlay(cardNumber);
+            }, 3000);
         }
     }
 }
 
 
-function checkForTrumps(trump, cardsToCheck){
+function checkForTrumps(trump, cardsToCheck) {
     let trumpLetter = trump.split("")[0];
     let trumpMatchingCards = [];
-    for (let card of cardsToCheck){
-        if (card.startsWith(trumpLetter)){
+    for (let card of cardsToCheck) {
+        if (card.startsWith(trumpLetter)) {
             trumpMatchingCards.push(card)
         }
     }
-    if (trumpMatchingCards.length === 1){
+    if (trumpMatchingCards.length === 1) {
         return trumpMatchingCards[0];
     } else if (trumpMatchingCards.length > 1) {
-            trumpMatchingCards.sort().reverse();
-            return trumpMatchingCards[0]
+        trumpMatchingCards.sort().reverse();
+        return trumpMatchingCards[0]
     } else {
         return ""
     }
 }
 
-function compareWithFirstCard(cardsToCheck){
+function compareWithFirstCard(cardsToCheck) {
     let card1Letter = cardsToCheck[0].split("")[0];
     let matchingCards = [cardsToCheck[0]];
-    for (let i = 1; i < cardsToCheck.length; i++){
-        if (cardsToCheck[i].startsWith(card1Letter)){
+    for (let i = 1; i < cardsToCheck.length; i++) {
+        if (cardsToCheck[i].startsWith(card1Letter)) {
             matchingCards.push(cardsToCheck[i])
         }
     }
-    if (matchingCards.length === 1){
+    if (matchingCards.length === 1) {
         return matchingCards[0]
-    } else if (matchingCards.length > 1){
+    } else if (matchingCards.length > 1) {
         matchingCards.sort().reverse();
         return matchingCards[0]
     } else {
@@ -324,7 +324,7 @@ function compareWithFirstCard(cardsToCheck){
 
 
 //trump will be cards.trump
-function checkHandRound(trump){
+function checkHandRound(trump) {
     let playersCards = {};
     let playerFirstInRound = document.querySelector('#first').querySelector('img').dataset.player;
     let playerSecondInRound = document.querySelector('#second').querySelector('img').dataset.player;
@@ -341,7 +341,7 @@ function checkHandRound(trump){
     let cardsToCheck = [];
     cardsToCheck.push(card1, card2, card3, card4);
     let winnerTrumpCard = checkForTrumps(trump, cardsToCheck);
-    if (winnerTrumpCard){
+    if (winnerTrumpCard) {
         return playersCards[winnerTrumpCard]
     } else {
         let winnerCard = compareWithFirstCard(cardsToCheck);
@@ -382,7 +382,7 @@ function updateRoundsWon(checkHandRound) {
     localStorage.setItem('roundsWon', JSON.stringify(dict));
 }
 
-function createObjHoldingAllBets(){
+function createObjHoldingAllBets() {
     return JSON.parse(localStorage.getItem('allBets'))
 }
 
@@ -400,21 +400,22 @@ function setRound(nextRound) {
 }
 
 
-
 function main() {
     localStorage.setItem('maxrounds', JSON.stringify(3)); //set maximum rounds here
     localStorage.setItem('scores', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
     let cardNumber = 1;
     gamePlay(cardNumber);
 }
-    function gamePlay(cardNumber){
-        localStorage.setItem('allBets', JSON.stringify({'Player1' : 0, 'Player2' : 0, 'Player3': 0, 'Player4': 0}));
-        localStorage.setItem('roundsWon', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
-        let cards = dealCards(cardNumber);
-        document.querySelector('#player').setAttribute('data-round', 0);
-        displayTrump(cards.trump);
-        displayPlayerHands(cards);
-    }
+
+function gamePlay(cardNumber) {
+    localStorage.setItem('allBets', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
+    localStorage.setItem('roundsWon', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
+    let cards = dealCards(cardNumber);
+    document.querySelector('#player').setAttribute('data-round', 0);
+    displayTrump(cards.trump);
+    displayDeck(cards.Deck);
+    displayPlayerHands(cards);
+}
 
 
 function getPlayer() {
@@ -422,7 +423,7 @@ function getPlayer() {
 }
 
 function setPlayer(nextPlayerInTurn) {
-   document.querySelector('#player').setAttribute('data-player', nextPlayerInTurn)
+    document.querySelector('#player').setAttribute('data-player', nextPlayerInTurn)
 }
 
 function nextPlayerInTurn() {
@@ -444,7 +445,7 @@ function getTurn() {
 
 function nextTurn(currentTurn) {
     let newTurn;
-    if (currentTurn < 4){
+    if (currentTurn < 4) {
         newTurn = currentTurn + 1;
     } else {
         newTurn = 1;
