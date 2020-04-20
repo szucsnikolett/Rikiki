@@ -11,16 +11,14 @@ function shuffleDeck() {
                    'D02', 'D03', 'D04', 'D05', 'D06', 'D07', 'D08', 'D09', 'D10', 'D11', 'D12', 'D13', 'D14',
                    'H02', 'H03', 'H04', 'H05', 'H06', 'H07', 'H08', 'H09', 'H10', 'H11', 'H12', 'H13', 'H14',
                    `S02`, 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09', 'S10', 'S11', 'S12', 'S13', 'S14'];
-  let currentIndex = cards.length, temporaryValue, randomIndex;
 
-    // While there remain elements to shuffle...
+    let currentIndex = cards.length, temporaryValue, randomIndex;
+
     while (0 !== currentIndex) {
 
-        // Pick a remaining element...
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
 
-        // And swap it with the current element.
         temporaryValue = cards[currentIndex];
         cards[currentIndex] = cards[randomIndex];
         cards[randomIndex] = temporaryValue;
@@ -57,11 +55,11 @@ function dealCards(numberOfCards) {
 }
 
 function displayPlayerHands(cards) {
-
     let round = getRound();
     let turn = getTurn();
     localStorage.setItem("cards", JSON.stringify(cards));
     let names = getPlayers();
+
     if (turn === 1 && round > 1) {
         let winner = checkHandRound(cards.trump);
         updateRoundsWon(winner);
@@ -72,6 +70,7 @@ function displayPlayerHands(cards) {
     let rootSrc = '../static/images/cards/';
     let players = ['#top', '#left', '#right', '#player'];
     let numberOfCards = cardsOfPlayer.length;
+
     if (round === 0) {
         document.querySelector('#bet-block').classList.remove("hidden");
     }
@@ -82,6 +81,7 @@ function displayPlayerHands(cards) {
     if (round > 1 && turn === 1) {
         setTimeout(removeCards, 1000);
     }
+
     for (let player of players) {
         let PlayerHtml = document.querySelector(player);
         PlayerHtml.innerHTML = '';
@@ -98,7 +98,7 @@ function displayPlayerHands(cards) {
                     if (cardsOfPlayer[i].startsWith(color)) {
                         card.addEventListener('click', playCard);
                     }
-                    else if(playerHasNoMatchingCards(cardsOfPlayer)){
+                    else if (playerHasNoMatchingCards(cardsOfPlayer)){
                         card.addEventListener('click', playCard);
                     }
                 } else {
@@ -114,8 +114,7 @@ function displayPlayerHands(cards) {
             PlayerHtml.appendChild(card);
         }
     }
-        initFull();
-
+    initFull();
 }
 
 
@@ -144,6 +143,7 @@ function displayDeck(Deck) {
 
 }
 
+
 function displayTrump(trump) {
     let rootSrc = '../static/images/cards/';
     let trumpHtml = document.querySelector('.trump');
@@ -154,18 +154,14 @@ function displayTrump(trump) {
     trumpHtml.appendChild(card);
 }
 
-// let Cards = dealCards(12);
-// displayTrump(Cards.trump);
-// displayDeck(Cards.Deck);
-// displayPlayerHands(Cards.Player1);
-
 
 function getBets(event) {
     let cards = JSON.parse(localStorage.getItem('cards'));
     let player = document.querySelector('#player').dataset.player;
-    let inputField = document.getElementById('bets').value;
+    let inputField = document.getElementById('bets');
     let localBets = JSON.parse(localStorage.getItem('allBets'));
-    localBets[player] = parseInt(localBets[player]) + parseInt(inputField);
+    localBets[player] = parseInt(localBets[player]) + parseInt(inputField.value);
+    inputField.value = "";
     localStorage.setItem('allBets', JSON.stringify(localBets));
     let round = getRound();
     let turn = getTurn();
@@ -233,7 +229,6 @@ function playCard(event) {
     let currentPlayer = document.querySelector('#player').dataset.player;
     let currentTurn = getTurn();
     let cards = JSON.parse(localStorage.getItem("cards"));
-    console.log(cards);
     let currentPlayerString;
     switch (currentTurn) {
         case 1:
@@ -248,10 +243,11 @@ function playCard(event) {
         case 4:
             currentPlayerString = '#fourth'
     }
+
     let turnCard = document.querySelector(currentPlayerString);
     turnCard.insertAdjacentElement('afterbegin', event.currentTarget);
     event.currentTarget.removeEventListener('click', playCard);
-    let currentCard = console.log(event.currentTarget.dataset.card);
+    let currentCard = event.currentTarget.dataset.card;
     cards[currentPlayer].splice(cards[currentPlayer].indexOf(currentCard), 1);
 
     let givenCards = document.querySelectorAll('.turn-card .card');
@@ -259,15 +255,16 @@ function playCard(event) {
         givenCard.classList.replace('card', 'turn-card');
         givenCard.style.transform = 'rotate(0deg)';
     }
-    // document.querySelector('#player').setAttribute('data-player', currentPlayer);
 
     if (getTurn() === 4) {
         setRound(nextRound());
 
     }
+
     nextTurn(getTurn());
     setPlayer(nextPlayerInTurn());
     displayPlayerHands(cards);
+
     if (cards.Player1.length === 0 && cards.Player2.length === 0 && cards.Player3.length === 0 && cards.Player4.length === 0) {
         let cardNumber = parseInt(document.querySelector('#player').dataset.cardnumber) + 1;
         document.querySelector('#player').setAttribute('data-cardnumber', cardNumber);
@@ -289,6 +286,7 @@ function playCard(event) {
 function checkForTrumps(trump, cardsToCheck) {
     let trumpLetter = trump.split("")[0];
     let trumpMatchingCards = [];
+
     for (let card of cardsToCheck) {
         if (card.startsWith(trumpLetter)) {
             trumpMatchingCards.push(card)
@@ -307,11 +305,13 @@ function checkForTrumps(trump, cardsToCheck) {
 function compareWithFirstCard(cardsToCheck) {
     let card1Letter = cardsToCheck[0].split("")[0];
     let matchingCards = [cardsToCheck[0]];
+
     for (let i = 1; i < cardsToCheck.length; i++) {
         if (cardsToCheck[i].startsWith(card1Letter)) {
             matchingCards.push(cardsToCheck[i])
         }
     }
+
     if (matchingCards.length === 1) {
         return matchingCards[0]
     } else if (matchingCards.length > 1) {
@@ -323,7 +323,6 @@ function compareWithFirstCard(cardsToCheck) {
 }
 
 
-//trump will be cards.trump
 function checkHandRound(trump) {
     let playersCards = {};
     let playerFirstInRound = document.querySelector('#first').querySelector('img').dataset.player;
@@ -341,6 +340,7 @@ function checkHandRound(trump) {
     let cardsToCheck = [];
     cardsToCheck.push(card1, card2, card3, card4);
     let winnerTrumpCard = checkForTrumps(trump, cardsToCheck);
+
     if (winnerTrumpCard) {
         return playersCards[winnerTrumpCard]
     } else {
@@ -401,11 +401,12 @@ function setRound(nextRound) {
 
 
 function main() {
-    localStorage.setItem('maxrounds', JSON.stringify(3)); //set maximum rounds here
+    localStorage.setItem('maxrounds', JSON.stringify(13)); //set maximum rounds here
     localStorage.setItem('scores', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
     let cardNumber = 1;
     gamePlay(cardNumber);
 }
+
 
 function gamePlay(cardNumber) {
     localStorage.setItem('allBets', JSON.stringify({'Player1': 0, 'Player2': 0, 'Player3': 0, 'Player4': 0}));
@@ -422,9 +423,11 @@ function getPlayer() {
     return document.querySelector('#player').dataset.player;
 }
 
+
 function setPlayer(nextPlayerInTurn) {
     document.querySelector('#player').setAttribute('data-player', nextPlayerInTurn)
 }
+
 
 function nextPlayerInTurn() {
     let currentPlayer = getPlayer();
@@ -439,9 +442,11 @@ function nextPlayerInTurn() {
     }
 }
 
+
 function getTurn() {
     return parseInt(document.querySelector('#player').dataset.turn);
 }
+
 
 function nextTurn(currentTurn) {
     let newTurn;
