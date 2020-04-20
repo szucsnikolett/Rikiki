@@ -46,7 +46,7 @@ backs). If you can see only one card in your hands after the first round, click 
 #### How to run
 
 - Install python 3.7 virtual environment
-- Activate the environment and install requirements.txt from the root folder
+- Activate the environment and install requirement.txt from the root folder
 - Run Flask server
 - Navigate to the given localhost url on your browser
 
@@ -57,7 +57,7 @@ backs). If you can see only one card in your hands after the first round, click 
 You can read the rules by clicking on the "Game rules" button. Fill in the blanks, then
 click on "We are ready!"! Player 1 starts the first round.
 
-![main page]("https://github.com/szucsnikolett/Rikiki/blob/master/images/main.png")
+![main page](https://github.com/szucsnikolett/Rikiki/blob/master/images/main.png)
 
 Make your bet and click on "Ok"!
 
